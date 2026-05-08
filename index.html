@@ -29,10 +29,17 @@
         <div class="scroll-area">
           <div class="card">
             <h2>Quick Stats</h2>
-            <div class="stats-grid">
-              <div class="stat-item"><span>25</span>Students</div>
-              <div class="stat-item"><span>12</span>Active Tasks</div>
-              <div class="stat-item"><span>$500</span>Pending</div>
+            <div class="stats-grid" id="home-stats">
+              <div class="stat-item"><span>0</span>Students</div>
+              <div class="stat-item"><span>0</span>Classes</div>
+              <div class="stat-item"><span>$0</span>Pending</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>Classes</h2>
+            <div id="classes-container">
+              <!-- Classes will be added here dynamically -->
             </div>
           </div>
         </div>
@@ -44,73 +51,11 @@
       <!-- Tasks Section -->
       <section id="tasks" class="page">
         <div class="scroll-area">
-          <!-- Daily Attendance Accordion -->
-          <div class="task-category accordion">
-            <div class="category-header accordion-header">
-              <span class="material-icons">event_note</span>
-              <h3>Daily Attendance</h3>
-              <span class="material-icons chevron">expand_more</span>
-            </div>
-            <div class="category-content">
-              <div class="card task-item">
-                <div class="task-info">
-                  <h4>Physics Batch A</h4>
-                  <p>10:00 AM - 11:30 AM</p>
-                </div>
-                <span class="status-badge pending">Pending</span>
-              </div>
-              <div class="card task-item">
-                <div class="task-info">
-                  <h4>Maths Group 1</h4>
-                  <p>04:00 PM - 05:30 PM</p>
-                </div>
-                <span class="status-badge success">Marked</span>
-              </div>
-            </div>
+          <div class="card">
+            <h2>Daily Attendance</h2>
+            <p id="attendance-date-label"></p>
           </div>
-
-          <!-- Pending Fees Accordion -->
-          <div class="task-category accordion">
-            <div class="category-header accordion-header">
-              <span class="material-icons">payments</span>
-              <h3>Pending Fees</h3>
-              <span class="material-icons chevron">expand_more</span>
-            </div>
-            <div class="category-content">
-              <div class="card task-item">
-                <div class="task-info">
-                  <h4>Md. Alamin</h4>
-                  <p>Monthly Tuition - $50</p>
-                </div>
-                <button class="btn-small">Remind</button>
-              </div>
-              <div class="card task-item">
-                <div class="task-info">
-                  <h4>Sarah Khan</h4>
-                  <p>Registration Fee - $20</p>
-                </div>
-                <button class="btn-small">Remind</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Joined Today Accordion -->
-          <div class="task-category accordion">
-            <div class="category-header accordion-header">
-              <span class="material-icons">person_add</span>
-              <h3>Joined Today</h3>
-              <span class="material-icons chevron">expand_more</span>
-            </div>
-            <div class="category-content">
-              <div class="card task-item">
-                <div class="task-info">
-                  <h4>John Doe</h4>
-                  <p>Enrolled in Chemistry Batch</p>
-                </div>
-                <span class="material-icons text-primary">chat</span>
-              </div>
-            </div>
-          </div>
+          <div id="attendance-container"></div>
         </div>
       </section>
 
@@ -119,153 +64,12 @@
         <div class="scroll-area">
           <div class="search-container card">
             <span class="material-icons">search</span>
-            <input type="text" placeholder="Search students..." />
+            <input type="text" id="student-search" placeholder="Search students..." />
           </div>
 
-          <div class="student-list">
-            <!-- Student 1 -->
-            <div class="card student-card accordion">
-              <div class="student-header accordion-header">
-                <div class="student-avatar">MA</div>
-                <div class="student-basic-info">
-                  <div class="name-row">
-                    <h4>Md. Alamin</h4>
-                    <span
-                      class="attendance-dot present"
-                      title="Present Today"
-                    ></span>
-                  </div>
-                  <p>Grade 12 | Physics Batch A</p>
-                </div>
-                <div class="header-actions">
-                  <button class="icon-btn call-btn">
-                    <span class="material-icons">phone</span>
-                  </button>
-                  <button class="icon-btn edit-btn">
-                    <span class="material-icons">edit_note</span>
-                  </button>
-                  <span class="material-icons chevron">expand_more</span>
-                </div>
-              </div>
-              <div class="category-content">
-                <div class="student-details-grid">
-                  <div class="detail-row">
-                    <strong>Roll No:</strong> <span>101</span>
-                  </div>
-                  <div class="detail-row">
-                    <strong>Father's Name:</strong> <span>Md. Rafiq</span>
-                  </div>
-                  <div class="detail-row">
-                    <strong>Mobile:</strong> <span>017XX-XXXXXX</span>
-                  </div>
-                  <div class="detail-row">
-                    <strong>Monthly Fee:</strong> <span>$50</span>
-                  </div>
-                  <div class="detail-row">
-                    <strong>Last Payment:</strong> <span>April 25, 2026</span>
-                  </div>
-                  <div class="detail-row">
-                    <strong>Joined:</strong> <span>Jan 15, 2026</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Student 2 -->
-            <div class="card student-card accordion">
-              <div class="student-header accordion-header">
-                <div class="student-avatar">SK</div>
-                <div class="student-basic-info">
-                  <div class="name-row">
-                    <h4>Sarah Khan</h4>
-                    <span
-                      class="attendance-dot absent"
-                      title="Absent Today"
-                    ></span>
-                  </div>
-                  <p>Grade 11 | Maths Group 1</p>
-                </div>
-                <div class="header-actions">
-                  <button class="icon-btn call-btn">
-                    <span class="material-icons">phone</span>
-                  </button>
-                  <button class="icon-btn edit-btn">
-                    <span class="material-icons">edit_note</span>
-                  </button>
-                  <span class="material-icons chevron">expand_more</span>
-                </div>
-              </div>
-              <div class="category-content">
-                <div class="student-details-grid">
-                  <div class="detail-row">
-                    <strong>Roll No:</strong> <span>205</span>
-                  </div>
-                  <div class="detail-row">
-                    <strong>Father's Name:</strong> <span>Zahid Khan</span>
-                  </div>
-                  <div class="detail-row">
-                    <strong>Mobile:</strong> <span>018XX-XXXXXX</span>
-                  </div>
-                  <div class="detail-row">
-                    <strong>Monthly Fee:</strong> <span>$45</span>
-                  </div>
-                  <div class="detail-row">
-                    <strong>Last Payment:</strong> <span>April 20, 2026</span>
-                  </div>
-                  <div class="detail-row">
-                    <strong>Joined:</strong> <span>Feb 02, 2026</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Student 3 -->
-            <div class="card student-card accordion">
-              <div class="student-header accordion-header">
-                <div class="student-avatar">JD</div>
-                <div class="student-basic-info">
-                  <div class="name-row">
-                    <h4>John Doe</h4>
-                    <span
-                      class="attendance-dot pending"
-                      title="Attendance Pending"
-                    ></span>
-                  </div>
-                  <p>Grade 12 | Chemistry Batch</p>
-                </div>
-                <div class="header-actions">
-                  <button class="icon-btn call-btn">
-                    <span class="material-icons">phone</span>
-                  </button>
-                  <button class="icon-btn edit-btn">
-                    <span class="material-icons">edit_note</span>
-                  </button>
-                  <span class="material-icons chevron">expand_more</span>
-                </div>
-              </div>
-              <div class="category-content">
-                <div class="student-details-grid">
-                  <div class="detail-row">
-                    <strong>Roll No:</strong> <span>112</span>
-                  </div>
-                  <div class="detail-row">
-                    <strong>Father's Name:</strong> <span>Robert Doe</span>
-                  </div>
-                  <div class="detail-row">
-                    <strong>Mobile:</strong> <span>019XX-XXXXXX</span>
-                  </div>
-                  <div class="detail-row">
-                    <strong>Monthly Fee:</strong> <span>$50</span>
-                  </div>
-                  <div class="detail-row">
-                    <strong>Last Payment:</strong> <span>N/A</span>
-                  </div>
-                  <div class="detail-row">
-                    <strong>Joined:</strong> <span>May 03, 2026</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div class="filter-row" id="student-class-filters"></div>
+          <div class="student-list" id="all-students-list">
+            <!-- Students are rendered here dynamically -->
           </div>
         </div>
         <button class="fab btn" title="Add Student">
@@ -276,110 +80,25 @@
       <!-- Fees Section -->
       <section id="fees" class="page">
         <div class="scroll-area">
-          <!-- Fee Stats Card -->
           <div class="card">
             <h2>Fee Overview</h2>
-            <div class="stats-grid">
-              <div class="stat-item"><span>$450</span>Collected</div>
-              <div class="stat-item"><span>$120</span>Pending</div>
-              <div class="stat-item"><span>$80</span>Overdue</div>
+            <div class="month-toolbar">
+              <button class="icon-btn" id="fee-prev-month" title="Previous month">
+                <span class="material-icons">chevron_left</span>
+              </button>
+              <strong id="fee-month-label"></strong>
+              <button class="icon-btn" id="fee-next-month" title="Next month">
+                <span class="material-icons">chevron_right</span>
+              </button>
+            </div>
+            <div class="stats-grid" id="fee-stats">
+              <div class="stat-item"><span>$0</span>Collected</div>
+              <div class="stat-item"><span>$0</span>Pending</div>
+              <div class="stat-item"><span>$0</span>Overdue</div>
             </div>
           </div>
-
-          <!-- Due Fees (Overdue) -->
-          <div class="task-category accordion">
-            <div class="category-header accordion-header">
-              <span class="material-icons" style="color: #c62828">warning</span>
-              <h3>Overdue Fees</h3>
-              <span class="material-icons chevron">expand_more</span>
-            </div>
-            <div class="category-content">
-              <div class="card task-item">
-                <div class="task-info">
-                  <h4>Md. Alamin</h4>
-                  <p>March 2026 - $50</p>
-                </div>
-                <div class="header-actions">
-                  <span class="status-badge danger">Overdue</span>
-                  <button class="btn-small">Remind</button>
-                </div>
-              </div>
-              <div class="card task-item">
-                <div class="task-info">
-                  <h4>Rahat Kabir</h4>
-                  <p>April 2026 - $30</p>
-                </div>
-                <div class="header-actions">
-                  <span class="status-badge danger">Overdue</span>
-                  <button class="btn-small">Remind</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Pending Fees (Current Month) -->
-          <div class="task-category accordion">
-            <div class="category-header accordion-header">
-              <span class="material-icons">hourglass_empty</span>
-              <h3>Pending (May 2026)</h3>
-              <span class="material-icons chevron">expand_more</span>
-            </div>
-            <div class="category-content">
-              <div class="card task-item">
-                <div class="task-info">
-                  <h4>Sarah Khan</h4>
-                  <p>Monthly Tuition - $45</p>
-                </div>
-                <span class="status-badge pending">Pending</span>
-              </div>
-              <div class="card task-item">
-                <div class="task-info">
-                  <h4>John Doe</h4>
-                  <p>Monthly Tuition - $50</p>
-                </div>
-                <span class="status-badge pending">Pending</span>
-              </div>
-              <div class="card task-item">
-                <div class="task-info">
-                  <h4>Anika Tabassum</h4>
-                  <p>Monthly Tuition - $40</p>
-                </div>
-                <span class="status-badge pending">Pending</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Given/Paid Fees -->
-          <div class="task-category accordion">
-            <div class="category-header accordion-header">
-              <span class="material-icons">check_circle</span>
-              <h3>Recently Paid</h3>
-              <span class="material-icons chevron">expand_more</span>
-            </div>
-            <div class="category-content">
-              <div class="card task-item">
-                <div class="task-info">
-                  <h4>Karim Ahmed</h4>
-                  <p>Paid on May 05 - $50</p>
-                </div>
-                <span class="status-badge success">Paid</span>
-              </div>
-              <div class="card task-item">
-                <div class="task-info">
-                  <h4>Fatima Zoya</h4>
-                  <p>Paid on May 02 - $45</p>
-                </div>
-                <span class="status-badge success">Paid</span>
-              </div>
-              <div class="card task-item">
-                <div class="task-info">
-                  <h4>Zunaid Islam</h4>
-                  <p>Paid on April 30 - $50</p>
-                </div>
-                <span class="status-badge success">Paid</span>
-              </div>
-            </div>
-          </div>
+          <div class="filter-row" id="fee-filters"></div>
+          <div id="fees-container"></div>
         </div>
       </section>
 
@@ -409,14 +128,22 @@
             </div>
             <div
               class="settings-item card clickable"
-              data-action="export-excel"
+              data-action="export-json"
             >
-              <span class="material-icons" style="color: #2e7d32">grid_on</span>
+              <span class="material-icons" style="color: #2e7d32">data_object</span>
               <div class="settings-info">
-                <h4>Export Excel</h4>
-                <p>Download student data as XLSX</p>
+                <h4>Backup JSON</h4>
+                <p>Download all local app data</p>
               </div>
               <span class="material-icons chevron">download</span>
+            </div>
+            <div class="settings-item card clickable" data-action="import-json">
+              <span class="material-icons" style="color: #1565c0">upload_file</span>
+              <div class="settings-info">
+                <h4>Restore Backup</h4>
+                <p>Import a previous JSON backup</p>
+              </div>
+              <span class="material-icons chevron">upload</span>
             </div>
           </div>
 
@@ -466,6 +193,14 @@
               </div>
               <span class="material-icons chevron">chevron_right</span>
             </div>
+            <div class="settings-item card clickable" data-action="clear-demo">
+              <span class="material-icons" style="color: #c62828">delete_sweep</span>
+              <div class="settings-info">
+                <h4>Clear All Data</h4>
+                <p>Remove classes, students, fees, and attendance</p>
+              </div>
+              <span class="material-icons chevron">chevron_right</span>
+            </div>
             <div class="settings-item card clickable" data-action="support">
               <span class="material-icons">help</span>
               <div class="settings-info">
@@ -485,6 +220,9 @@
         </div>
       </section>
     </main>
+
+    <input type="file" id="import-json-input" accept="application/json" hidden />
+    <div id="toast" class="toast"></div>
 
     <nav class="bottom-nav">
       <a href="#" class="nav-item active" data-page="home">
@@ -531,7 +269,7 @@
     <!-- Create Student Modal -->
     <div id="create-student-modal" class="modal-overlay">
       <div class="modal-content">
-        <h3>Add New Student</h3>
+        <h3 id="student-modal-title">Add New Student</h3>
         <div class="form-group">
           <label for="student-name">Student Name</label>
           <input type="text" id="student-name" placeholder="e.g. Md. Alamin" />
@@ -554,7 +292,14 @@
         </div>
         <div class="form-group">
           <label for="student-monthly-fee">Monthly Fee ($)</label>
-          <input type="number" id="student-monthly-fee" placeholder="e.g. 50" />
+          <input
+            type="number"
+            id="student-monthly-fee"
+            min="0"
+            step="1"
+            inputmode="numeric"
+            placeholder="e.g. 999"
+          />
         </div>
         <div class="form-group">
           <label for="student-batch">Batch/Class</label>
@@ -568,10 +313,78 @@
           <label for="student-roll">Roll Number</label>
           <input type="text" id="student-roll" placeholder="e.g. 101" />
         </div>
+        <div class="form-group">
+          <label for="student-photo">Profile Picture URL</label>
+          <input
+            type="url"
+            id="student-photo"
+            placeholder="Optional image link"
+          />
+        </div>
         <div class="modal-actions">
           <button id="cancel-student" class="btn-secondary">Cancel</button>
           <button id="submit-student" class="btn-primary">Add Student</button>
         </div>
+      </div>
+    </div>
+
+    <!-- Student Details Modal -->
+    <div id="student-details-modal" class="modal-overlay">
+      <div class="modal-content student-profile-modal">
+        <button id="close-student-details" class="icon-btn modal-close">
+          <span class="material-icons">close</span>
+        </button>
+        <div id="student-details-content"></div>
+      </div>
+    </div>
+
+    <!-- Admin Profile Modal -->
+    <div id="admin-profile-modal" class="modal-overlay">
+      <div class="modal-content admin-profile-modal">
+        <button id="close-admin-profile" class="icon-btn modal-close">
+          <span class="material-icons">close</span>
+        </button>
+        <div id="admin-profile-view"></div>
+        <form id="admin-profile-form" class="admin-profile-form">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="admin-name">Admin Name</label>
+              <input type="text" id="admin-name" placeholder="e.g. Md. Alamin" />
+            </div>
+            <div class="form-group">
+              <label for="admin-role">Role</label>
+              <input type="text" id="admin-role" placeholder="e.g. Founder & Teacher" />
+            </div>
+            <div class="form-group">
+              <label for="admin-image">Image URL</label>
+              <input type="url" id="admin-image" placeholder="Optional image link" />
+            </div>
+            <div class="form-group">
+              <label for="admin-coaching">Coaching Name</label>
+              <input type="text" id="admin-coaching" placeholder="e.g. Coaching Manager" />
+            </div>
+            <div class="form-group">
+              <label for="admin-mobile">Mobile</label>
+              <input type="tel" id="admin-mobile" placeholder="e.g. 017XX-XXXXXX" />
+            </div>
+            <div class="form-group">
+              <label for="admin-email">Email</label>
+              <input type="email" id="admin-email" placeholder="e.g. admin@example.com" />
+            </div>
+            <div class="form-group full-width">
+              <label for="admin-address">Address</label>
+              <input type="text" id="admin-address" placeholder="Coaching address" />
+            </div>
+            <div class="form-group full-width">
+              <label for="admin-about">About</label>
+              <input type="text" id="admin-about" placeholder="Short note about the coaching" />
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button type="button" id="cancel-admin-profile" class="btn-secondary">Close</button>
+            <button type="submit" class="btn-primary">Save Profile</button>
+          </div>
+        </form>
       </div>
     </div>
 
