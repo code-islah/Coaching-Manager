@@ -23,7 +23,7 @@ function monthLabel(month) {
   const [year, monthNumber] = month.split("-").map(Number);
   return new Date(year, monthNumber - 1, 1).toLocaleDateString("en-US", {
     month: "long",
-    year: "numeric"
+    year: "numeric",
   });
 }
 
@@ -79,13 +79,15 @@ function openDB() {
       if (!database.objectStoreNames.contains("students")) {
         const store = database.createObjectStore("students", {
           keyPath: "id",
-          autoIncrement: true
+          autoIncrement: true,
         });
         store.createIndex("batch", "batch", { unique: false });
       }
 
       if (!database.objectStoreNames.contains("attendance")) {
-        const store = database.createObjectStore("attendance", { keyPath: "key" });
+        const store = database.createObjectStore("attendance", {
+          keyPath: "key",
+        });
         store.createIndex("studentId", "studentId", { unique: false });
         store.createIndex("date", "date", { unique: false });
       }
@@ -154,7 +156,10 @@ async function migrateLocalStorage() {
   const students = JSON.parse(localStorage.getItem("students") || "[]");
 
   for (const className of classes) {
-    await putOne("classes", { name: className, createdAt: new Date().toISOString() });
+    await putOne("classes", {
+      name: className,
+      createdAt: new Date().toISOString(),
+    });
   }
 
   for (const student of students) {
@@ -167,13 +172,18 @@ async function migrateLocalStorage() {
         batch: student.batch,
         roll: student.roll || "",
         photo: student.photo || "",
-        joined: student.joined || new Date().toLocaleDateString("en-US", {
-          month: "short",
-          day: "2-digit",
-          year: "numeric"
-        })
+        joined:
+          student.joined ||
+          new Date().toLocaleDateString("en-US", {
+            month: "short",
+            day: "2-digit",
+            year: "numeric",
+          }),
       });
-      await putOne("classes", { name: student.batch, createdAt: new Date().toISOString() });
+      await putOne("classes", {
+        name: student.batch,
+        createdAt: new Date().toISOString(),
+      });
     }
   }
 
@@ -202,18 +212,22 @@ async function ensureFeeRecords(students) {
         amount: amountValue(student.monthlyFee),
         status: "pending",
         paidAt: "",
-        note: ""
+        note: "",
       });
     }
   }
 }
 
 function attendanceFor(attendance, studentId, date = todayKey()) {
-  return attendance.find((item) => item.studentId === studentId && item.date === date);
+  return attendance.find(
+    (item) => item.studentId === studentId && item.date === date,
+  );
 }
 
 function feeFor(fees, studentId, month = activeFeeMonth) {
-  return fees.find((item) => item.studentId === studentId && item.month === month);
+  return fees.find(
+    (item) => item.studentId === studentId && item.month === month,
+  );
 }
 
 async function setAttendance(studentId, status) {
@@ -223,7 +237,7 @@ async function setAttendance(studentId, status) {
     studentId,
     date,
     status,
-    updatedAt: new Date().toISOString()
+    updatedAt: new Date().toISOString(),
   });
   await refreshAll();
   showToast(`Attendance set to ${titleCase(status)}.`);
@@ -242,7 +256,7 @@ async function setFeeStatus(studentId, status) {
     amount: amountValue(existing?.amount ?? student?.monthlyFee),
     status,
     paidAt: status === "paid" ? new Date().toLocaleDateString("en-US") : "",
-    note: existing?.note || ""
+    note: existing?.note || "",
   });
 
   await refreshAll();
@@ -258,7 +272,8 @@ function createAvatar(student, className = "student-avatar") {
 }
 
 function statusBadge(status = "pending") {
-  const badgeClass = status === "paid" ? "success" : status === "overdue" ? "danger" : "pending";
+  const badgeClass =
+    status === "paid" ? "success" : status === "overdue" ? "danger" : "pending";
   return `<span class="status-badge ${badgeClass}">${escapeHtml(titleCase(status))}</span>`;
 }
 
@@ -272,8 +287,9 @@ async function getAdminProfile() {
     mobile: "",
     email: "",
     address: "",
-    about: "Manage classes, students, attendance, and monthly fees from one place.",
-    ...(saved?.value || {})
+    about:
+      "Manage classes, students, attendance, and monthly fees from one place.",
+    ...(saved?.value || {}),
   };
 }
 
@@ -328,15 +344,20 @@ function renderClasses(classes, students, attendance) {
   }
 
   if (!classes.length) {
-    container.innerHTML = '<p class="empty-state">No classes yet. Add a class to begin.</p>';
+    container.innerHTML =
+      '<p class="empty-state">No classes yet. Add a class to begin.</p>';
     return;
   }
 
   classes
     .sort((a, b) => a.name.localeCompare(b.name))
     .forEach((classItem) => {
-      const classStudents = students.filter((student) => student.batch === classItem.name);
-      const marked = classStudents.filter((student) => attendanceFor(attendance, student.id)).length;
+      const classStudents = students.filter(
+        (student) => student.batch === classItem.name,
+      );
+      const marked = classStudents.filter((student) =>
+        attendanceFor(attendance, student.id),
+      ).length;
       const button = document.createElement("button");
       button.className = "class-card";
       button.type = "button";
@@ -358,7 +379,9 @@ function renderClasses(classes, students, attendance) {
 
 function renderClassStudents(className, students, attendance) {
   const container = document.getElementById("classes-container");
-  const classStudents = students.filter((student) => student.batch === className);
+  const classStudents = students.filter(
+    (student) => student.batch === className,
+  );
 
   container.innerHTML = `
     <div class="class-students-view">
@@ -378,23 +401,33 @@ function renderClassStudents(className, students, attendance) {
     </div>
   `;
 
-  document.getElementById("back-to-classes").addEventListener("click", async () => {
-    activeClassName = null;
-    await refreshAll();
-  });
+  document
+    .getElementById("back-to-classes")
+    .addEventListener("click", async () => {
+      activeClassName = null;
+      await refreshAll();
+    });
 
-  container.querySelector(".class-add-student").addEventListener("click", () => {
-    openStudentModal({ batch: className });
-  });
+  container
+    .querySelector(".class-add-student")
+    .addEventListener("click", () => {
+      openStudentModal({ batch: className });
+    });
 
   const list = container.querySelector(".class-student-list");
   if (!classStudents.length) {
-    list.innerHTML = '<p class="empty-state">No students in this class yet.</p>';
+    list.innerHTML =
+      '<p class="empty-state">No students in this class yet.</p>';
     return;
   }
 
   classStudents.forEach((student) => {
-    list.appendChild(studentCard(student, attendanceFor(attendance, student.id)?.status || "not yet"));
+    list.appendChild(
+      studentCard(
+        student,
+        attendanceFor(attendance, student.id)?.status || "not yet",
+      ),
+    );
   });
 }
 
@@ -424,10 +457,14 @@ function studentCard(student, todayStatus) {
     </div>
   `;
 
-  card.querySelector(".student-header").addEventListener("click", () => openStudentDetails(student.id));
+  card
+    .querySelector(".student-header")
+    .addEventListener("click", () => openStudentDetails(student.id));
   card.querySelector(".call-btn").addEventListener("click", (event) => {
     event.stopPropagation();
-    showToast(student.mobile ? `Calling ${student.mobile}` : "No mobile number saved.");
+    showToast(
+      student.mobile ? `Calling ${student.mobile}` : "No mobile number saved.",
+    );
   });
   card.querySelector(".edit-btn").addEventListener("click", (event) => {
     event.stopPropagation();
@@ -443,22 +480,30 @@ function studentCard(student, todayStatus) {
 
 function renderAttendance(classes, students, attendance) {
   const container = document.getElementById("attendance-container");
-  document.getElementById("attendance-date-label").textContent = new Date().toLocaleDateString(
-    "en-US",
-    { weekday: "long", month: "short", day: "numeric", year: "numeric" },
-  );
+  document.getElementById("attendance-date-label").textContent =
+    new Date().toLocaleDateString("en-US", {
+      weekday: "long",
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
   container.innerHTML = "";
 
   if (!classes.length) {
-    container.innerHTML = '<p class="empty-state">Add classes and students to mark attendance.</p>';
+    container.innerHTML =
+      '<p class="empty-state">Add classes and students to mark attendance.</p>';
     return;
   }
 
   classes
     .sort((a, b) => a.name.localeCompare(b.name))
     .forEach((classItem) => {
-      const classStudents = students.filter((student) => student.batch === classItem.name);
-      const marked = classStudents.filter((student) => attendanceFor(attendance, student.id)).length;
+      const classStudents = students.filter(
+        (student) => student.batch === classItem.name,
+      );
+      const marked = classStudents.filter((student) =>
+        attendanceFor(attendance, student.id),
+      ).length;
       const section = document.createElement("div");
       section.className = "card attendance-class-card accordion";
       section.innerHTML = `
@@ -477,11 +522,13 @@ function renderAttendance(classes, students, attendance) {
 
       const list = section.querySelector(".attendance-list");
       if (!classStudents.length) {
-        list.innerHTML = '<p class="empty-state">No students in this class.</p>';
+        list.innerHTML =
+          '<p class="empty-state">No students in this class.</p>';
       }
 
       classStudents.forEach((student) => {
-        const current = attendanceFor(attendance, student.id)?.status || "not yet";
+        const current =
+          attendanceFor(attendance, student.id)?.status || "not yet";
         const row = document.createElement("div");
         row.className = "attendance-row";
         row.innerHTML = `
@@ -501,7 +548,9 @@ function renderAttendance(classes, students, attendance) {
           button.type = "button";
           button.className = `status-pill ${status.replace(" ", "-")} ${current === status ? "active" : ""}`;
           button.textContent = titleCase(status);
-          button.addEventListener("click", () => setAttendance(student.id, status));
+          button.addEventListener("click", () =>
+            setAttendance(student.id, status),
+          );
           controls.appendChild(button);
         });
 
@@ -509,16 +558,21 @@ function renderAttendance(classes, students, attendance) {
       });
 
       container.appendChild(section);
-      section.querySelector(".attendance-class-head").addEventListener("click", () => {
-        section.classList.toggle("open");
-      });
+      section
+        .querySelector(".attendance-class-head")
+        .addEventListener("click", () => {
+          section.classList.toggle("open");
+        });
     });
 }
 
 function renderStudents(classes, students, attendance) {
   const filters = document.getElementById("student-class-filters");
   const list = document.getElementById("all-students-list");
-  const search = document.getElementById("student-search").value.trim().toLowerCase();
+  const search = document
+    .getElementById("student-search")
+    .value.trim()
+    .toLowerCase();
   const classNames = ["All", ...classes.map((item) => item.name).sort()];
 
   filters.innerHTML = "";
@@ -534,9 +588,13 @@ function renderStudents(classes, students, attendance) {
   });
 
   const filtered = students
-    .filter((student) => activeStudentFilter === "All" || student.batch === activeStudentFilter)
+    .filter(
+      (student) =>
+        activeStudentFilter === "All" || student.batch === activeStudentFilter,
+    )
     .filter((student) => {
-      const value = `${student.name} ${student.batch} ${student.roll} ${student.mobile}`.toLowerCase();
+      const value =
+        `${student.name} ${student.batch} ${student.roll} ${student.mobile}`.toLowerCase();
       return value.includes(search);
     })
     .sort((a, b) => a.name.localeCompare(b.name));
@@ -548,7 +606,12 @@ function renderStudents(classes, students, attendance) {
   }
 
   filtered.forEach((student) => {
-    list.appendChild(studentCard(student, attendanceFor(attendance, student.id)?.status || "not yet"));
+    list.appendChild(
+      studentCard(
+        student,
+        attendanceFor(attendance, student.id)?.status || "not yet",
+      ),
+    );
   });
 }
 
@@ -556,14 +619,15 @@ function renderFees(students, fees) {
   const stats = document.getElementById("fee-stats");
   const filters = document.getElementById("fee-filters");
   const container = document.getElementById("fees-container");
-  document.getElementById("fee-month-label").textContent = monthLabel(activeFeeMonth);
+  document.getElementById("fee-month-label").textContent =
+    monthLabel(activeFeeMonth);
   const currentFees = students.map((student) => ({
     student,
     fee: feeFor(fees, student.id) || {
       amount: amountValue(student.monthlyFee),
       status: "pending",
-      paidAt: ""
-    }
+      paidAt: "",
+    },
   }));
 
   const collected = currentFees
@@ -587,7 +651,7 @@ function renderFees(students, fees) {
     ["all", "All"],
     ["pending", "Pending"],
     ["overdue", "Overdue"],
-    ["paid", "Paid"]
+    ["paid", "Paid"],
   ].forEach(([value, label]) => {
     const button = document.createElement("button");
     button.className = `chip ${activeFeeFilter === value ? "active" : ""}`;
@@ -599,11 +663,14 @@ function renderFees(students, fees) {
     filters.appendChild(button);
   });
 
-  const visible = currentFees.filter((item) => activeFeeFilter === "all" || item.fee.status === activeFeeFilter);
+  const visible = currentFees.filter(
+    (item) => activeFeeFilter === "all" || item.fee.status === activeFeeFilter,
+  );
   container.innerHTML = "";
 
   if (!visible.length) {
-    container.innerHTML = '<p class="empty-state">No fee records in this view.</p>';
+    container.innerHTML =
+      '<p class="empty-state">No fee records in this view.</p>';
     return;
   }
 
@@ -629,10 +696,14 @@ function renderFees(students, fees) {
     `;
 
     card.querySelectorAll("[data-status]").forEach((button) => {
-      button.addEventListener("click", () => setFeeStatus(student.id, button.dataset.status));
+      button.addEventListener("click", () =>
+        setFeeStatus(student.id, button.dataset.status),
+      );
     });
     card.querySelector(".remind-btn").addEventListener("click", () => {
-      showToast(`Reminder ready for ${student.name}: ${money(fee.amount)} is ${fee.status}.`);
+      showToast(
+        `Reminder ready for ${student.name}: ${money(fee.amount)} is ${fee.status}.`,
+      );
     });
     container.appendChild(card);
   });
@@ -642,15 +713,16 @@ function renderFeesByClass(students, fees) {
   const stats = document.getElementById("fee-stats");
   const filters = document.getElementById("fee-filters");
   const container = document.getElementById("fees-container");
-  document.getElementById("fee-month-label").textContent = monthLabel(activeFeeMonth);
+  document.getElementById("fee-month-label").textContent =
+    monthLabel(activeFeeMonth);
 
   const currentFees = students.map((student) => ({
     student,
     fee: feeFor(fees, student.id) || {
       amount: amountValue(student.monthlyFee),
       status: "pending",
-      paidAt: ""
-    }
+      paidAt: "",
+    },
   }));
 
   const collected = currentFees
@@ -674,7 +746,7 @@ function renderFeesByClass(students, fees) {
     ["all", "All"],
     ["pending", "Pending"],
     ["overdue", "Overdue"],
-    ["paid", "Paid"]
+    ["paid", "Paid"],
   ].forEach(([value, label]) => {
     const button = document.createElement("button");
     button.className = `chip ${activeFeeFilter === value ? "active" : ""}`;
@@ -686,25 +758,33 @@ function renderFeesByClass(students, fees) {
     filters.appendChild(button);
   });
 
-  const visible = currentFees.filter((item) => activeFeeFilter === "all" || item.fee.status === activeFeeFilter);
+  const visible = currentFees.filter(
+    (item) => activeFeeFilter === "all" || item.fee.status === activeFeeFilter,
+  );
   container.innerHTML = "";
 
   if (!visible.length) {
-    container.innerHTML = '<p class="empty-state">No fee records in this view.</p>';
+    container.innerHTML =
+      '<p class="empty-state">No fee records in this view.</p>';
     return;
   }
 
   const grouped = new Map();
   visible.forEach((record) => {
-    if (!grouped.has(record.student.batch)) grouped.set(record.student.batch, []);
+    if (!grouped.has(record.student.batch))
+      grouped.set(record.student.batch, []);
     grouped.get(record.student.batch).push(record);
   });
 
-  [...grouped.entries()].sort(([a], [b]) => a.localeCompare(b)).forEach(([className, records]) => {
-    const paidCount = records.filter(({ fee }) => fee.status === "paid").length;
-    const section = document.createElement("div");
-    section.className = "card fee-class-card accordion";
-    section.innerHTML = `
+  [...grouped.entries()]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .forEach(([className, records]) => {
+      const paidCount = records.filter(
+        ({ fee }) => fee.status === "paid",
+      ).length;
+      const section = document.createElement("div");
+      section.className = "card fee-class-card accordion";
+      section.innerHTML = `
       <button class="fee-class-head accordion-header" type="button">
         <span class="material-icons">account_balance_wallet</span>
         <div>
@@ -718,11 +798,13 @@ function renderFeesByClass(students, fees) {
       </div>
     `;
 
-    const list = section.querySelector(".fee-list");
-    records.sort((a, b) => a.student.name.localeCompare(b.student.name)).forEach(({ student, fee }) => {
-      const card = document.createElement("div");
-      card.className = "fee-card";
-      card.innerHTML = `
+      const list = section.querySelector(".fee-list");
+      records
+        .sort((a, b) => a.student.name.localeCompare(b.student.name))
+        .forEach(({ student, fee }) => {
+          const card = document.createElement("div");
+          card.className = "fee-card";
+          card.innerHTML = `
         <div class="fee-main">
           ${createAvatar(student, "student-avatar small")}
           <div class="task-info">
@@ -740,37 +822,46 @@ function renderFeesByClass(students, fees) {
         </div>
       `;
 
-      card.querySelectorAll("[data-status]").forEach((button) => {
-        button.addEventListener("click", () => setFeeStatus(student.id, button.dataset.status));
-      });
-      card.querySelector(".remind-btn").addEventListener("click", () => {
-        showToast(`Reminder ready for ${student.name}: ${money(fee.amount)} is ${fee.status}.`);
-      });
-      list.appendChild(card);
-    });
+          card.querySelectorAll("[data-status]").forEach((button) => {
+            button.addEventListener("click", () =>
+              setFeeStatus(student.id, button.dataset.status),
+            );
+          });
+          card.querySelector(".remind-btn").addEventListener("click", () => {
+            showToast(
+              `Reminder ready for ${student.name}: ${money(fee.amount)} is ${fee.status}.`,
+            );
+          });
+          list.appendChild(card);
+        });
 
-    container.appendChild(section);
-    section.querySelector(".fee-class-head").addEventListener("click", () => {
-      section.classList.toggle("open");
+      container.appendChild(section);
+      section.querySelector(".fee-class-head").addEventListener("click", () => {
+        section.classList.toggle("open");
+      });
     });
-  });
 }
 
 async function openStudentDetails(studentId) {
   const [students, attendance, fees] = await Promise.all([
     getAll("students"),
     getAll("attendance"),
-    getAll("fees")
+    getAll("fees"),
   ]);
   const student = students.find((item) => item.id === studentId);
   if (!student) return;
 
   const counts = ATTENDANCE_STATUSES.reduce((result, status) => {
-    result[status] = attendance.filter((item) => item.studentId === student.id && item.status === status).length;
+    result[status] = attendance.filter(
+      (item) => item.studentId === student.id && item.status === status,
+    ).length;
     return result;
   }, {});
   const today = attendanceFor(attendance, student.id)?.status || "not yet";
-  const currentFee = feeFor(fees, student.id) || { status: "pending", amount: student.monthlyFee };
+  const currentFee = feeFor(fees, student.id) || {
+    status: "pending",
+    amount: student.monthlyFee,
+  };
   const detailsModal = document.getElementById("student-details-modal");
   const detailsContent = document.getElementById("student-details-content");
 
@@ -782,7 +873,8 @@ async function openStudentDetails(studentId) {
     </div>
     <div class="profile-stat-grid">
       ${ATTENDANCE_STATUSES.map(
-        (status) => `<div><span>${counts[status]}</span>${escapeHtml(titleCase(status))}</div>`,
+        (status) =>
+          `<div><span>${counts[status]}</span>${escapeHtml(titleCase(status))}</div>`,
       ).join("")}
     </div>
     <div class="student-details-grid profile-details">
@@ -800,12 +892,18 @@ async function openStudentDetails(studentId) {
 
 function openStudentModal(student = {}) {
   editingStudentId = student.id || null;
-  document.getElementById("student-modal-title").textContent = editingStudentId ? "Edit Student" : "Add New Student";
-  document.getElementById("submit-student").textContent = editingStudentId ? "Save Student" : "Add Student";
+  document.getElementById("student-modal-title").textContent = editingStudentId
+    ? "Edit Student"
+    : "Add New Student";
+  document.getElementById("submit-student").textContent = editingStudentId
+    ? "Save Student"
+    : "Add Student";
   document.getElementById("student-name").value = student.name || "";
-  document.getElementById("student-fathers-name").value = student.fathersName || "";
+  document.getElementById("student-fathers-name").value =
+    student.fathersName || "";
   document.getElementById("student-mobile").value = student.mobile || "";
-  document.getElementById("student-monthly-fee").value = student.monthlyFee || "";
+  document.getElementById("student-monthly-fee").value =
+    student.monthlyFee || "";
   document.getElementById("student-batch").value = student.batch || "";
   document.getElementById("student-roll").value = student.roll || "";
   document.getElementById("student-photo").value = student.photo || "";
@@ -816,12 +914,20 @@ function openStudentModal(student = {}) {
 function closeStudentModal() {
   editingStudentId = null;
   document.getElementById("create-student-modal").classList.remove("active");
-  document.getElementById("student-modal-title").textContent = "Add New Student";
+  document.getElementById("student-modal-title").textContent =
+    "Add New Student";
   document.getElementById("submit-student").textContent = "Add Student";
-  ["student-name", "student-fathers-name", "student-mobile", "student-monthly-fee", "student-batch", "student-roll", "student-photo"]
-    .forEach((id) => {
-      document.getElementById(id).value = "";
-    });
+  [
+    "student-name",
+    "student-fathers-name",
+    "student-mobile",
+    "student-monthly-fee",
+    "student-batch",
+    "student-roll",
+    "student-photo",
+  ].forEach((id) => {
+    document.getElementById(id).value = "";
+  });
 }
 
 async function saveStudentFromModal() {
@@ -829,10 +935,12 @@ async function saveStudentFromModal() {
     name: document.getElementById("student-name").value.trim(),
     fathersName: document.getElementById("student-fathers-name").value.trim(),
     mobile: document.getElementById("student-mobile").value.trim(),
-    monthlyFee: amountValue(document.getElementById("student-monthly-fee").value),
+    monthlyFee: amountValue(
+      document.getElementById("student-monthly-fee").value,
+    ),
     batch: document.getElementById("student-batch").value.trim(),
     roll: document.getElementById("student-roll").value.trim(),
-    photo: document.getElementById("student-photo").value.trim()
+    photo: document.getElementById("student-photo").value.trim(),
   };
 
   if (!student.name || !student.batch) {
@@ -840,19 +948,23 @@ async function saveStudentFromModal() {
     return;
   }
 
-  const existing = editingStudentId ? await getOne("students", editingStudentId) : null;
+  const existing = editingStudentId
+    ? await getOne("students", editingStudentId)
+    : null;
   await putOne("classes", {
     name: student.batch,
-    createdAt: existing?.createdAt || new Date().toISOString()
+    createdAt: existing?.createdAt || new Date().toISOString(),
   });
   const record = {
     ...existing,
     ...student,
-    joined: existing?.joined || new Date().toLocaleDateString("en-US", {
-      month: "short",
-      day: "2-digit",
-      year: "numeric"
-    })
+    joined:
+      existing?.joined ||
+      new Date().toLocaleDateString("en-US", {
+        month: "short",
+        day: "2-digit",
+        year: "numeric",
+      }),
   };
 
   if (editingStudentId) {
@@ -874,7 +986,10 @@ async function addClassFromModal() {
     return;
   }
 
-  await putOne("classes", { name: className, createdAt: new Date().toISOString() });
+  await putOne("classes", {
+    name: className,
+    createdAt: new Date().toISOString(),
+  });
   input.value = "";
   document.getElementById("create-class-modal").classList.remove("active");
   await refreshAll();
@@ -896,7 +1011,15 @@ function downloadFile(filename, content, type) {
 async function exportCSV() {
   const { students, attendance, fees } = await appData();
   const rows = [
-    ["Name", "Class", "Roll", "Mobile", "Monthly Fee", "Today Attendance", "Current Fee Status"]
+    [
+      "Name",
+      "Class",
+      "Roll",
+      "Mobile",
+      "Monthly Fee",
+      "Today Attendance",
+      "Current Fee Status",
+    ],
   ];
 
   students.forEach((student) => {
@@ -907,12 +1030,14 @@ async function exportCSV() {
       student.mobile || "",
       student.monthlyFee || 0,
       attendanceFor(attendance, student.id)?.status || "not yet",
-      feeFor(fees, student.id)?.status || "pending"
+      feeFor(fees, student.id)?.status || "pending",
     ]);
   });
 
   const csv = rows
-    .map((row) => row.map((cell) => `"${String(cell).replaceAll('"', '""')}"`).join(","))
+    .map((row) =>
+      row.map((cell) => `"${String(cell).replaceAll('"', '""')}"`).join(","),
+    )
     .join("\n");
 
   downloadFile(`coaching-students-${todayKey()}.csv`, csv, "text/csv");
@@ -947,7 +1072,8 @@ async function importJSON(file) {
 }
 
 async function clearAllData() {
-  if (!confirm("Clear all classes, students, attendance, and fee records?")) return;
+  if (!confirm("Clear all classes, students, attendance, and fee records?"))
+    return;
   await clearStore("classes");
   await clearStore("students");
   await clearStore("attendance");
@@ -993,13 +1119,16 @@ async function saveAdminProfile(event) {
   event.preventDefault();
   const profile = {
     name: document.getElementById("admin-name").value.trim() || "Admin Name",
-    role: document.getElementById("admin-role").value.trim() || "Coaching Admin",
+    role:
+      document.getElementById("admin-role").value.trim() || "Coaching Admin",
     image: document.getElementById("admin-image").value.trim(),
-    coaching: document.getElementById("admin-coaching").value.trim() || "Coaching Manager",
+    coaching:
+      document.getElementById("admin-coaching").value.trim() ||
+      "Coaching Manager",
     mobile: document.getElementById("admin-mobile").value.trim(),
     email: document.getElementById("admin-email").value.trim(),
     address: document.getElementById("admin-address").value.trim(),
-    about: document.getElementById("admin-about").value.trim()
+    about: document.getElementById("admin-about").value.trim(),
   };
 
   await putOne("settings", { key: "adminProfile", value: profile });
@@ -1030,17 +1159,29 @@ async function handleSettingsAction(action) {
       break;
     case "monthly-bill": {
       const lines = students.map((student) => {
-        const fee = feeFor(fees, student.id) || { amount: student.monthlyFee, status: "pending" };
+        const fee = feeFor(fees, student.id) || {
+          amount: student.monthlyFee,
+          status: "pending",
+        };
         return `${student.name} | ${student.batch} | ${money(fee.amount)} | ${titleCase(fee.status)}`;
       });
-      downloadFile(`monthly-bills-${activeFeeMonth}.txt`, lines.join("\n"), "text/plain");
+      downloadFile(
+        `monthly-bills-${activeFeeMonth}.txt`,
+        lines.join("\n"),
+        "text/plain",
+      );
       showToast("Monthly bill list generated.");
       break;
     }
     case "admit-marksheet":
       downloadFile(
         `admit-list-${todayKey()}.txt`,
-        students.map((student) => `${student.roll || ""} | ${student.name} | ${student.batch}`).join("\n"),
+        students
+          .map(
+            (student) =>
+              `${student.roll || ""} | ${student.name} | ${student.batch}`,
+          )
+          .join("\n"),
         "text/plain",
       );
       showToast("Academic list generated.");
@@ -1048,19 +1189,28 @@ async function handleSettingsAction(action) {
     case "id-card":
       downloadFile(
         `id-cards-${todayKey()}.txt`,
-        students.map((student) => `${student.name}\nClass: ${student.batch}\nRoll: ${student.roll || "N/A"}\nMobile: ${student.mobile || "N/A"}\n`).join("\n"),
+        students
+          .map(
+            (student) =>
+              `${student.name}\nClass: ${student.batch}\nRoll: ${student.roll || "N/A"}\nMobile: ${student.mobile || "N/A"}\n`,
+          )
+          .join("\n"),
         "text/plain",
       );
       showToast("ID card data generated.");
       break;
     case "send-sms":
-      showToast(`SMS list ready for ${students.filter((student) => student.mobile).length} contacts.`);
+      showToast(
+        `SMS list ready for ${students.filter((student) => student.mobile).length} contacts.`,
+      );
       break;
     case "clear-demo":
       await clearAllData();
       break;
     case "support":
-      alert("Use Home to create classes, Students to manage profiles, Tasks to mark attendance, and Fees to track payments.");
+      alert(
+        "Use Home to create classes, Students to manage profiles, Tasks to mark attendance, and Fees to track payments.",
+      );
       break;
   }
 }
@@ -1095,7 +1245,9 @@ function setupNavigation() {
       const targetPage = item.getAttribute("data-page");
       navItems.forEach((nav) => nav.classList.remove("active"));
       item.classList.add("active");
-      pages.forEach((page) => page.classList.toggle("active", page.id === targetPage));
+      pages.forEach((page) =>
+        page.classList.toggle("active", page.id === targetPage),
+      );
       pageTitle.textContent = item.querySelector("span:last-child").textContent;
     });
   });
@@ -1103,38 +1255,56 @@ function setupNavigation() {
 
 function setupModals() {
   const classModal = document.getElementById("create-class-modal");
-  document.querySelector('#home .fab[title="Add Class"]').addEventListener("click", () => {
-    classModal.classList.add("active");
-    document.getElementById("class-name").focus();
-  });
+  document
+    .querySelector('#home .fab[title="Add Class"]')
+    .addEventListener("click", () => {
+      classModal.classList.add("active");
+      document.getElementById("class-name").focus();
+    });
   document.getElementById("cancel-class").addEventListener("click", () => {
     classModal.classList.remove("active");
   });
-  document.getElementById("submit-class").addEventListener("click", addClassFromModal);
+  document
+    .getElementById("submit-class")
+    .addEventListener("click", addClassFromModal);
   classModal.addEventListener("click", (event) => {
     if (event.target === classModal) classModal.classList.remove("active");
   });
 
   const studentModal = document.getElementById("create-student-modal");
-  document.querySelector('#students .fab[title="Add Student"]').addEventListener("click", () => openStudentModal());
-  document.getElementById("cancel-student").addEventListener("click", closeStudentModal);
-  document.getElementById("submit-student").addEventListener("click", saveStudentFromModal);
+  document
+    .querySelector('#students .fab[title="Add Student"]')
+    .addEventListener("click", () => openStudentModal());
+  document
+    .getElementById("cancel-student")
+    .addEventListener("click", closeStudentModal);
+  document
+    .getElementById("submit-student")
+    .addEventListener("click", saveStudentFromModal);
   studentModal.addEventListener("click", (event) => {
     if (event.target === studentModal) closeStudentModal();
   });
 
   const detailsModal = document.getElementById("student-details-modal");
-  document.getElementById("close-student-details").addEventListener("click", () => {
-    detailsModal.classList.remove("active");
-  });
+  document
+    .getElementById("close-student-details")
+    .addEventListener("click", () => {
+      detailsModal.classList.remove("active");
+    });
   detailsModal.addEventListener("click", (event) => {
     if (event.target === detailsModal) detailsModal.classList.remove("active");
   });
 
   const adminModal = document.getElementById("admin-profile-modal");
-  document.getElementById("close-admin-profile").addEventListener("click", closeAdminProfile);
-  document.getElementById("cancel-admin-profile").addEventListener("click", closeAdminProfile);
-  document.getElementById("admin-profile-form").addEventListener("submit", saveAdminProfile);
+  document
+    .getElementById("close-admin-profile")
+    .addEventListener("click", closeAdminProfile);
+  document
+    .getElementById("cancel-admin-profile")
+    .addEventListener("click", closeAdminProfile);
+  document
+    .getElementById("admin-profile-form")
+    .addEventListener("submit", saveAdminProfile);
   adminModal.addEventListener("click", (event) => {
     if (event.target === adminModal) closeAdminProfile();
   });
@@ -1142,33 +1312,41 @@ function setupModals() {
 
 function setupSettings() {
   document.querySelectorAll(".settings-item").forEach((item) => {
-    item.addEventListener("click", () => handleSettingsAction(item.dataset.action));
+    item.addEventListener("click", () =>
+      handleSettingsAction(item.dataset.action),
+    );
   });
 
-  document.getElementById("import-json-input").addEventListener("change", async (event) => {
-    const [file] = event.target.files;
-    if (!file) return;
+  document
+    .getElementById("import-json-input")
+    .addEventListener("change", async (event) => {
+      const [file] = event.target.files;
+      if (!file) return;
 
-    try {
-      await importJSON(file);
-    } catch (error) {
-      showToast("Could not import that backup.");
-    } finally {
-      event.target.value = "";
-    }
-  });
+      try {
+        await importJSON(file);
+      } catch (error) {
+        showToast("Could not import that backup.");
+      } finally {
+        event.target.value = "";
+      }
+    });
 }
 
 function setupFeeMonthControls() {
-  document.getElementById("fee-prev-month").addEventListener("click", async () => {
-    activeFeeMonth = shiftMonth(activeFeeMonth, -1);
-    await refreshAll();
-  });
+  document
+    .getElementById("fee-prev-month")
+    .addEventListener("click", async () => {
+      activeFeeMonth = shiftMonth(activeFeeMonth, -1);
+      await refreshAll();
+    });
 
-  document.getElementById("fee-next-month").addEventListener("click", async () => {
-    activeFeeMonth = shiftMonth(activeFeeMonth, 1);
-    await refreshAll();
-  });
+  document
+    .getElementById("fee-next-month")
+    .addEventListener("click", async () => {
+      activeFeeMonth = shiftMonth(activeFeeMonth, 1);
+      await refreshAll();
+    });
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -1178,6 +1356,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   setupModals();
   setupSettings();
   setupFeeMonthControls();
-  document.getElementById("student-search").addEventListener("input", refreshAll);
+  document
+    .getElementById("student-search")
+    .addEventListener("input", refreshAll);
   await refreshAll();
 });

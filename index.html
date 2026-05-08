@@ -64,7 +64,11 @@
         <div class="scroll-area">
           <div class="search-container card">
             <span class="material-icons">search</span>
-            <input type="text" id="student-search" placeholder="Search students..." />
+            <input
+              type="text"
+              id="student-search"
+              placeholder="Search students..."
+            />
           </div>
 
           <div class="filter-row" id="student-class-filters"></div>
@@ -83,7 +87,11 @@
           <div class="card">
             <h2>Fee Overview</h2>
             <div class="month-toolbar">
-              <button class="icon-btn" id="fee-prev-month" title="Previous month">
+              <button
+                class="icon-btn"
+                id="fee-prev-month"
+                title="Previous month"
+              >
                 <span class="material-icons">chevron_left</span>
               </button>
               <strong id="fee-month-label"></strong>
@@ -126,11 +134,10 @@
               </div>
               <span class="material-icons chevron">download</span>
             </div>
-            <div
-              class="settings-item card clickable"
-              data-action="export-json"
-            >
-              <span class="material-icons" style="color: #2e7d32">data_object</span>
+            <div class="settings-item card clickable" data-action="export-json">
+              <span class="material-icons" style="color: #2e7d32"
+                >data_object</span
+              >
               <div class="settings-info">
                 <h4>Backup JSON</h4>
                 <p>Download all local app data</p>
@@ -138,7 +145,9 @@
               <span class="material-icons chevron">download</span>
             </div>
             <div class="settings-item card clickable" data-action="import-json">
-              <span class="material-icons" style="color: #1565c0">upload_file</span>
+              <span class="material-icons" style="color: #1565c0"
+                >upload_file</span
+              >
               <div class="settings-info">
                 <h4>Restore Backup</h4>
                 <p>Import a previous JSON backup</p>
@@ -194,7 +203,9 @@
               <span class="material-icons chevron">chevron_right</span>
             </div>
             <div class="settings-item card clickable" data-action="clear-demo">
-              <span class="material-icons" style="color: #c62828">delete_sweep</span>
+              <span class="material-icons" style="color: #c62828"
+                >delete_sweep</span
+              >
               <div class="settings-info">
                 <h4>Clear All Data</h4>
                 <p>Remove classes, students, fees, and attendance</p>
@@ -221,7 +232,12 @@
       </section>
     </main>
 
-    <input type="file" id="import-json-input" accept="application/json" hidden />
+    <input
+      type="file"
+      id="import-json-input"
+      accept="application/json"
+      hidden
+    />
     <div id="toast" class="toast"></div>
 
     <nav class="bottom-nav">
@@ -349,39 +365,77 @@
           <div class="form-grid">
             <div class="form-group">
               <label for="admin-name">Admin Name</label>
-              <input type="text" id="admin-name" placeholder="e.g. Md. Alamin" />
+              <input
+                type="text"
+                id="admin-name"
+                placeholder="e.g. Md. Alamin"
+              />
             </div>
             <div class="form-group">
               <label for="admin-role">Role</label>
-              <input type="text" id="admin-role" placeholder="e.g. Founder & Teacher" />
+              <input
+                type="text"
+                id="admin-role"
+                placeholder="e.g. Founder & Teacher"
+              />
             </div>
             <div class="form-group">
               <label for="admin-image">Image URL</label>
-              <input type="url" id="admin-image" placeholder="Optional image link" />
+              <input
+                type="url"
+                id="admin-image"
+                placeholder="Optional image link"
+              />
             </div>
             <div class="form-group">
               <label for="admin-coaching">Coaching Name</label>
-              <input type="text" id="admin-coaching" placeholder="e.g. Coaching Manager" />
+              <input
+                type="text"
+                id="admin-coaching"
+                placeholder="e.g. Coaching Manager"
+              />
             </div>
             <div class="form-group">
               <label for="admin-mobile">Mobile</label>
-              <input type="tel" id="admin-mobile" placeholder="e.g. 017XX-XXXXXX" />
+              <input
+                type="tel"
+                id="admin-mobile"
+                placeholder="e.g. 017XX-XXXXXX"
+              />
             </div>
             <div class="form-group">
               <label for="admin-email">Email</label>
-              <input type="email" id="admin-email" placeholder="e.g. admin@example.com" />
+              <input
+                type="email"
+                id="admin-email"
+                placeholder="e.g. admin@example.com"
+              />
             </div>
             <div class="form-group full-width">
               <label for="admin-address">Address</label>
-              <input type="text" id="admin-address" placeholder="Coaching address" />
+              <input
+                type="text"
+                id="admin-address"
+                placeholder="Coaching address"
+              />
             </div>
             <div class="form-group full-width">
               <label for="admin-about">About</label>
-              <input type="text" id="admin-about" placeholder="Short note about the coaching" />
+              <input
+                type="text"
+                id="admin-about"
+                placeholder="Short note about the coaching"
+              />
             </div>
           </div>
           <div class="modal-actions">
-            <button type="button" id="cancel-admin-profile" class="btn-secondary">Close</button>
+            <button
+              type="button"
+              id="cancel-admin-profile"
+              class="btn-secondary"
+            >
+              Close
+            </button>
             <button type="submit" class="btn-primary">Save Profile</button>
           </div>
         </form>
