@@ -1,0 +1,549 @@
+/* Mobile App Reset & Layout */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  --primary-color: #2ebf91; /* Charming green */
+  --primary-light: #83eaf1;
+  --primary-gradient: linear-gradient(135deg, #2ebf91 0%, #83eaf1 100%);
+  --background-color: #f8faf9;
+  --surface-color: #ffffff;
+  --text-primary: #2d3436;
+  --text-secondary: #636e72;
+  --app-bar-height: 60px;
+  --bottom-nav-height: 64px;
+}
+
+body {
+  font-family: "Poppins", "Roboto", sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-primary);
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* App Bar */
+.app-bar {
+  height: var(--app-bar-height);
+  background: var(--primary-gradient);
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  box-shadow: 0 4px 12px rgba(46, 191, 145, 0.2);
+  z-index: 10;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+.app-bar h1 {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #ffffff;
+  /* 3D Text Effect */
+  text-shadow:
+    0 1px 0 #cccccc,
+    0 2px 0 #c9c9c9,
+    0 5px 0 #aaa;
+}
+
+/* Main Content Area */
+.content {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  flex-direction: column;
+}
+
+.page.active {
+  display: flex;
+}
+
+.scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Cards */
+.card {
+  background-color: var(--surface-color);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.card h2 {
+  font-size: 18px;
+  margin-bottom: 12px;
+  color: var(--primary-color);
+}
+
+.card p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.stat-item {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.stat-item span {
+  display: block;
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+/* Bottom Navigation */
+.bottom-nav {
+  height: var(--bottom-nav-height);
+  background-color: var(--surface-color);
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding-bottom: env(safe-area-inset-bottom); /* Support for notched phones */
+}
+
+.nav-item {
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-size: 11px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  height: 100%;
+  transition: color 0.2s;
+}
+
+.nav-item .material-icons {
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+
+.nav-item.active {
+  color: var(--primary-color);
+}
+
+/* Floating Action Button (FAB) & General Button */
+.fab {
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--primary-gradient);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 15px rgba(46, 191, 145, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 100;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.fab:active {
+    transform: scale(0.9);
+    box-shadow: 0 2px 8px rgba(46, 191, 145, 0.3);
+}
+
+.btn {
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Modal Styling */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-content {
+    background-color: var(--surface-color);
+    width: 90%;
+    max-width: 350px;
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.active .modal-content {
+    transform: translateY(0);
+}
+
+.modal-content h3 {
+    margin-bottom: 20px;
+    color: var(--text-primary);
+    font-size: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.btn-primary, .btn-secondary {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-primary {
+    background: var(--primary-gradient);
+    color: white;
+    box-shadow: 0 4px 10px rgba(46, 191, 145, 0.3);
+}
+
+/* Task Sections & Items */
+.task-category {
+    margin-bottom: 24px;
+}
+
+.category-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding-left: 4px;
+}
+
+.category-header h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.category-header .material-icons {
+    color: var(--primary-color);
+    font-size: 20px;
+}
+
+/* Accordion Styling */
+.accordion-header {
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    justify-content: flex-start; /* Reset from earlier flex settings if needed */
+    width: 100%;
+}
+
+.accordion-header h3 {
+    flex: 1; /* Push chevron to the right */
+}
+
+.chevron {
+    transition: transform 0.3s ease;
+    color: var(--text-secondary);
+}
+
+.accordion.open .chevron {
+    transform: rotate(180deg);
+}
+
+.category-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, opacity 0.3s ease;
+    opacity: 0;
+}
+
+.accordion.open .category-content {
+    max-height: 1000px; /* Large enough to fit content */
+    opacity: 1;
+    margin-top: 8px;
+}
+
+.task-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    margin-bottom: 8px;
+}
+
+.task-info h4 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.task-info p {
+    font-size: 13px !important;
+}
+
+/* Status Badges */
+.status-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+}
+
+.status-badge.pending {
+    background-color: #fff3e0;
+    color: #ef6c00;
+}
+
+.status-badge.success {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-badge.danger {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+.btn-small {
+    background-color: transparent;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Search Styling */
+.search-container {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px !important;
+    gap: 12px;
+    margin-bottom: 20px;
+    border-radius: 30px !important;
+}
+
+.search-container input {
+    border: none;
+    background: transparent;
+    flex: 1;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+}
+
+/* Student Cards Refactored */
+.student-card {
+    padding: 0 !important; /* Let header and content handle padding */
+    overflow: hidden;
+}
+
+.student-card .accordion-header {
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.student-card .student-basic-info {
+    flex: 1;
+}
+
+.name-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 2px;
+}
+
+.attendance-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.attendance-dot.present { background-color: #4caf50; }
+.attendance-dot.absent { background-color: #f44336; }
+.attendance-dot.pending { background-color: #bdbdbd; }
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.student-details-grid {
+    padding: 16px;
+    padding-top: 0;
+    border-top: 1px solid #f0f0f0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.student-card.open .category-content {
+    margin-top: 0; /* Align with top border */
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+/* Settings Styling */
+.settings-group-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 16px 4px 8px 4px;
+}
+
+.settings-group {
+    margin-bottom: 20px;
+}
+
+.settings-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px !important;
+    margin-bottom: 8px !important;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.settings-item:active {
+    background-color: #f0f0f0;
+}
+
+.settings-item .material-icons {
+    font-size: 24px;
+    color: var(--text-secondary);
+}
+
+.settings-info {
+    flex: 1;
+}
+
+.settings-info h4 {
+    font-size: 15px;
+    margin-bottom: 2px;
+}
+
+.settings-info p {
+    font-size: 12px !important;
+    color: var(--text-secondary);
+}
+
+.settings-item .chevron {
+    font-size: 20px;
+    color: #e0e0e0;
+}
+
+.clickable {
+    -webkit-tap-highlight-color: rgba(46, 191, 145, 0.1);
+}
+
+/* Footer Styling */
+.settings-footer {
+    text-align: center;
+    padding: 32px 0 16px 0;
+    color: var(--text-secondary);
+    font-size: 13px;
+    opacity: 0.8;
+}
+
+.settings-footer p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.settings-footer .heart {
+    color: #e91e63;
+    font-size: 16px;
+}
+
