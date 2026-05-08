@@ -139,7 +139,10 @@
                 </div>
                 <div class="header-actions">
                   <button class="icon-btn call-btn">
-                    <span class="material-icons">call</span>
+                    <span class="material-icons">phone</span>
+                  </button>
+                  <button class="icon-btn edit-btn">
+                    <span class="material-icons">edit_note</span>
                   </button>
                   <span class="material-icons chevron">expand_more</span>
                 </div>
@@ -184,7 +187,10 @@
                 </div>
                 <div class="header-actions">
                   <button class="icon-btn call-btn">
-                    <span class="material-icons">call</span>
+                    <span class="material-icons">phone</span>
+                  </button>
+                  <button class="icon-btn edit-btn">
+                    <span class="material-icons">edit_note</span>
                   </button>
                   <span class="material-icons chevron">expand_more</span>
                 </div>
@@ -229,7 +235,10 @@
                 </div>
                 <div class="header-actions">
                   <button class="icon-btn call-btn">
-                    <span class="material-icons">call</span>
+                    <span class="material-icons">phone</span>
+                  </button>
+                  <button class="icon-btn edit-btn">
+                    <span class="material-icons">edit_note</span>
                   </button>
                   <span class="material-icons chevron">expand_more</span>
                 </div>
@@ -280,7 +289,7 @@
           <!-- Due Fees (Overdue) -->
           <div class="task-category accordion">
             <div class="category-header accordion-header">
-              <span class="material-icons" style="color: #c62828;">warning</span>
+              <span class="material-icons" style="color: #c62828">warning</span>
               <h3>Overdue Fees</h3>
               <span class="material-icons chevron">expand_more</span>
             </div>
@@ -376,91 +385,105 @@
 
       <!-- Settings Section -->
       <section id="settings" class="page">
-          <div class="scroll-area">
-              <div class="settings-group">
-                  <div class="settings-item card clickable" data-action="profile">
-                      <span class="material-icons">account_circle</span>
-                      <div class="settings-info">
-                          <h4>Profile</h4>
-                          <p>Update your coaching info</p>
-                      </div>
-                      <span class="material-icons chevron">chevron_right</span>
-                  </div>
+        <div class="scroll-area">
+          <div class="settings-group">
+            <div class="settings-item card clickable" data-action="profile">
+              <span class="material-icons">account_circle</span>
+              <div class="settings-info">
+                <h4>Profile</h4>
+                <p>Update your coaching info</p>
               </div>
+              <span class="material-icons chevron">chevron_right</span>
+            </div>
+          </div>
 
-              <div class="settings-group-label">Data & Exports</div>
-              <div class="settings-group">
-                  <div class="settings-item card clickable" data-action="export-csv">
-                      <span class="material-icons text-primary">description</span>
-                      <div class="settings-info">
-                          <h4>Export CSV</h4>
-                          <p>Download student data as CSV</p>
-                      </div>
-                      <span class="material-icons chevron">download</span>
-                  </div>
-                  <div class="settings-item card clickable" data-action="export-excel">
-                      <span class="material-icons" style="color: #2e7d32;">grid_on</span>
-                      <div class="settings-info">
-                          <h4>Export Excel</h4>
-                          <p>Download student data as XLSX</p>
-                      </div>
-                      <span class="material-icons chevron">download</span>
-                  </div>
+          <div class="settings-group-label">Data & Exports</div>
+          <div class="settings-group">
+            <div class="settings-item card clickable" data-action="export-csv">
+              <span class="material-icons text-primary">description</span>
+              <div class="settings-info">
+                <h4>Export CSV</h4>
+                <p>Download student data as CSV</p>
               </div>
-
-              <div class="settings-group-label">Documents & Billing</div>
-              <div class="settings-group">
-                  <div class="settings-item card clickable" data-action="monthly-bill">
-                      <span class="material-icons" style="color: #c62828;">picture_as_pdf</span>
-                      <div class="settings-info">
-                          <h4>Monthly Fee Demand Bill [PDF]</h4>
-                          <p>Generate bills for all students</p>
-                      </div>
-                      <span class="material-icons chevron">chevron_right</span>
-                  </div>
-                  <div class="settings-item card clickable" data-action="admit-marksheet">
-                      <span class="material-icons" style="color: #1565c0;">school</span>
-                      <div class="settings-info">
-                          <h4>Admitcard & Marksheet</h4>
-                          <p>Generate academic documents</p>
-                      </div>
-                      <span class="material-icons chevron">chevron_right</span>
-                  </div>
-                  <div class="settings-item card clickable" data-action="id-card">
-                      <span class="material-icons" style="color: #f9a825;">badge</span>
-                      <div class="settings-info">
-                          <h4>ID Card</h4>
-                          <p>Print student identification cards</p>
-                      </div>
-                      <span class="material-icons chevron">chevron_right</span>
-                  </div>
+              <span class="material-icons chevron">download</span>
+            </div>
+            <div
+              class="settings-item card clickable"
+              data-action="export-excel"
+            >
+              <span class="material-icons" style="color: #2e7d32">grid_on</span>
+              <div class="settings-info">
+                <h4>Export Excel</h4>
+                <p>Download student data as XLSX</p>
               </div>
+              <span class="material-icons chevron">download</span>
+            </div>
+          </div>
 
-              <div class="settings-group-label">Communication & Support</div>
-              <div class="settings-group">
-                  <div class="settings-item card clickable" data-action="send-sms">
-                      <span class="material-icons" style="color: #6a1b9a;">textsms</span>
-                      <div class="settings-info">
-                          <h4>Send SMS</h4>
-                          <p>Bulk message parents/students</p>
-                      </div>
-                      <span class="material-icons chevron">chevron_right</span>
-                  </div>
-                  <div class="settings-item card clickable" data-action="support">
-                      <span class="material-icons">help</span>
-                      <div class="settings-info">
-                          <h4>Help & Support</h4>
-                          <p>Get assistance or report issues</p>
-                      </div>
-                      <span class="material-icons chevron">chevron_right</span>
-                  </div>
-                  </div>
+          <div class="settings-group-label">Documents & Billing</div>
+          <div class="settings-group">
+            <div
+              class="settings-item card clickable"
+              data-action="monthly-bill"
+            >
+              <span class="material-icons" style="color: #c62828"
+                >picture_as_pdf</span
+              >
+              <div class="settings-info">
+                <h4>Monthly Fee Demand Bill [PDF]</h4>
+                <p>Generate bills for all students</p>
+              </div>
+              <span class="material-icons chevron">chevron_right</span>
+            </div>
+            <div
+              class="settings-item card clickable"
+              data-action="admit-marksheet"
+            >
+              <span class="material-icons" style="color: #1565c0">school</span>
+              <div class="settings-info">
+                <h4>Admitcard & Marksheet</h4>
+                <p>Generate academic documents</p>
+              </div>
+              <span class="material-icons chevron">chevron_right</span>
+            </div>
+            <div class="settings-item card clickable" data-action="id-card">
+              <span class="material-icons" style="color: #f9a825">badge</span>
+              <div class="settings-info">
+                <h4>ID Card</h4>
+                <p>Print student identification cards</p>
+              </div>
+              <span class="material-icons chevron">chevron_right</span>
+            </div>
+          </div>
 
-                  <div class="settings-footer">
-                  <p>Made with <span class="material-icons heart">favorite</span> by Md. Alamin</p>
-                  </div>
-                  </div>
-                  </section>
+          <div class="settings-group-label">Communication & Support</div>
+          <div class="settings-group">
+            <div class="settings-item card clickable" data-action="send-sms">
+              <span class="material-icons" style="color: #6a1b9a">textsms</span>
+              <div class="settings-info">
+                <h4>Send SMS</h4>
+                <p>Bulk message parents/students</p>
+              </div>
+              <span class="material-icons chevron">chevron_right</span>
+            </div>
+            <div class="settings-item card clickable" data-action="support">
+              <span class="material-icons">help</span>
+              <div class="settings-info">
+                <h4>Help & Support</h4>
+                <p>Get assistance or report issues</p>
+              </div>
+              <span class="material-icons chevron">chevron_right</span>
+            </div>
+          </div>
+
+          <div class="settings-footer">
+            <p>
+              Made with <span class="material-icons heart">favorite</span> by
+              Md. Alamin
+            </p>
+          </div>
+        </div>
+      </section>
     </main>
 
     <nav class="bottom-nav">
@@ -501,6 +524,53 @@
         <div class="modal-actions">
           <button id="cancel-class" class="btn-secondary">Cancel</button>
           <button id="submit-class" class="btn-primary">Create Class</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Create Student Modal -->
+    <div id="create-student-modal" class="modal-overlay">
+      <div class="modal-content">
+        <h3>Add New Student</h3>
+        <div class="form-group">
+          <label for="student-name">Student Name</label>
+          <input type="text" id="student-name" placeholder="e.g. Md. Alamin" />
+        </div>
+        <div class="form-group">
+          <label for="student-fathers-name">Father's Name</label>
+          <input
+            type="text"
+            id="student-fathers-name"
+            placeholder="e.g. Md. Rafiq"
+          />
+        </div>
+        <div class="form-group">
+          <label for="student-mobile">Mobile Number</label>
+          <input
+            type="tel"
+            id="student-mobile"
+            placeholder="e.g. 017XX-XXXXXX"
+          />
+        </div>
+        <div class="form-group">
+          <label for="student-monthly-fee">Monthly Fee ($)</label>
+          <input type="number" id="student-monthly-fee" placeholder="e.g. 50" />
+        </div>
+        <div class="form-group">
+          <label for="student-batch">Batch/Class</label>
+          <input
+            type="text"
+            id="student-batch"
+            placeholder="e.g. Physics Batch A"
+          />
+        </div>
+        <div class="form-group">
+          <label for="student-roll">Roll Number</label>
+          <input type="text" id="student-roll" placeholder="e.g. 101" />
+        </div>
+        <div class="modal-actions">
+          <button id="cancel-student" class="btn-secondary">Cancel</button>
+          <button id="submit-student" class="btn-primary">Add Student</button>
         </div>
       </div>
     </div>
